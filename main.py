@@ -90,7 +90,7 @@ def download_export():
 
         # Open export popup and click export
         openExportPopup = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/div/div/div[2]/div[2]/div[2]/ag-grid-options/div/ag-menu/button/span"))
+            EC.element_to_be_clickable((By.ID, "jobAllGridOptionButton"))
         )
         openExportPopup.click()
         print("Clicked on the openExportPopup button")
