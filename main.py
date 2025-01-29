@@ -4,115 +4,122 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
 
 app = FastAPI()
 
+# Directory to store downloaded files
 DOWNLOAD_DIR = "/tmp/selenium_downloads"
 if not os.path.exists(DOWNLOAD_DIR):
     os.makedirs(DOWNLOAD_DIR)
 
-@app.get("/download-export")
-async def download_export():
-    chrome_options = webdriver.ChromeOptions()
-    
-    # Path to the Google Chrome binary (ensure it's installed in the environment)
-    chrome_options.binary_location = "/usr/bin/google-chrome-stable"  # Specify the path to Chrome binary
 
-    chrome_options.add_argument("--headless")
+@app.get("/download-export")
+def download_export():
+    # Configure Chrome options for headless mode
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")  # Enable headless mode
+    chrome_options.add_argument("--disable-gpu")  # Disable GPU for headless
     chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-    chrome_options.add_argument("--window-size=1920x1080")
     chrome_options.add_experimental_option("prefs", {
-        "download.default_directory": DOWNLOAD_DIR,
+        "download.default_directory": DOWNLOAD_DIR,  # Set download directory
         "download.prompt_for_download": False,
         "safebrowsing.enabled": True
     })
 
-    # Initialize the Chrome WebDriver with the specified options
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    # Initialize the WebDriver
+    driver = webdriver.Chrome(options=chrome_options)
 
     try:
-        # Navigate to the login page
         driver.get("https://utrees.arborgold.net/AG/#/login")
         time.sleep(3)
 
-        # Locate the username field and input data
-        user_name_field = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//input[@type='text']"))
-        )
-        user_name_field.send_keys("Lewis")
+        # Check if the login form exists
+        try:
+            user_name_field = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.XPATH, "/html/body/app-root/div/ng-component/div/div[2]/ag-login-form/div[1]/div/form/div/div[2]/div/input"))
+            )
 
-        # Locate the password field and input data
-        password_input = driver.find_element(By.XPATH, "//input[@type='password']")
-        password_input.send_keys("Hammersport2024!")
+            # If found, proceed with login
+            user_name_field.send_keys("Lewis")
 
-        # Locate and click the login button
-        login_btn = driver.find_element(By.XPATH, "//button[contains(text(),'Login')]")
-        login_btn.click()
-        time.sleep(5)
+            password_input = driver.find_element(By.XPATH, "/html/body/app-root/div/ng-component/div/div[2]/ag-login-form/div[1]/div/form/div/div[3]/div/input")
+            password_input.send_keys("Hammersport2024!")
 
-        # Click the job menu
+            login_btn = driver.find_element(By.XPATH, "/html/body/app-root/div/ng-component/div/div[2]/ag-login-form/div[1]/div/form/div/div[4]/button[1]").click()
+            print("Logging in...")
+            time.sleep(5)
+        except:
+            print("Already logged in, skipping login step.")
+
+        # Click the 'Job' menu item
         job_menu = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.ID, "sidenav_link_job"))
         )
         job_menu.click()
+        print("Navigated to jobs menu")
         time.sleep(5)
 
-        # Click the filter button to open the filter options
+        # Click on the filter button to open filter options
         job_filter = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Filter')]"))
+            EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/div/div/div[2]/div[1]/button[2]/span"))
         )
         job_filter.click()
+        print("Opened filter popup")
         time.sleep(3)
 
-        # Select the "Last Month" period in the filter
+        # Select the 'Last Month' option from the dropdown
         period_dropdown = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'Last Month')]"))
+            EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/kendo-popup/div/form/div[2]/div[1]/div/ag-dropdownlist/kendo-dropdownlist/span/span[1]"))
         )
         period_dropdown.click()
+        print("Clicked on period dropdown")
 
-        # Click the filter button to apply the filter
+        # Click the 'Filter' button
         filter_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.ID, "jobsFilterButton"))
         )
         filter_button.click()
+        print("Clicked on the filter button")
         time.sleep(5)
 
-        # Open the export popup
-        open_export_popup = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Export')]"))
+        # Open export popup and click export
+        openExportPopup = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/div/div/div[2]/div[2]/div[2]/ag-grid-options/div/ag-menu/button/span"))
         )
-        open_export_popup.click()
+        openExportPopup.click()
+        print("Clicked on the openExportPopup button")
 
-        # Click the export option
-        export_btn = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//li/span[contains(text(),'Export')]"))
+        ExportbTN = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "/html/body/kendo-popup/div/kendo-menu/ul/li[2]/span/span"))
         )
-        export_btn.click()
+        ExportbTN.click()
+        print("Clicked on the Export button")
 
-        # Wait for the download to complete
+        # Wait for the file to download
         time.sleep(20)
 
-        # List the files in the download directory and return the latest one
+        # Get the latest downloaded file
         downloaded_files = os.listdir(DOWNLOAD_DIR)
         if not downloaded_files:
             raise HTTPException(status_code=404, detail="No files downloaded.")
 
         latest_file = max([os.path.join(DOWNLOAD_DIR, f) for f in downloaded_files], key=os.path.getctime)
+        print(f"Downloaded file: {latest_file}")
 
+        # Return the file as a response
         return FileResponse(latest_file, media_type="application/octet-stream", filename=os.path.basename(latest_file))
 
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
     finally:
         driver.quit()
+
 
 if __name__ == "__main__":
     import uvicorn
