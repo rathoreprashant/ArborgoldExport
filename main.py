@@ -63,7 +63,7 @@ def download_export():
         )
         job_menu.click()
         print("Navigated to jobs menu")
-        time.sleep(5)
+       
 
         # # Click on the filter button to open filter options
         # job_filter = WebDriverWait(driver, 10).until(
@@ -102,7 +102,7 @@ def download_export():
         print("Clicked on the Export button")
 
         # Wait for the file to download
-        time.sleep(10)
+        time.sleep(5)
 
         # Get the latest downloaded file
         downloaded_files = os.listdir(DOWNLOAD_DIR)
