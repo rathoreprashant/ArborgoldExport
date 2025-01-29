@@ -64,28 +64,28 @@ def download_export():
         print("Navigated to jobs menu")
         time.sleep(5)
 
-        # Click on the filter button to open filter options
-        job_filter = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/div/div/div[2]/div[1]/button[2]/span"))
-        )
-        job_filter.click()
-        print("Opened filter popup")
-        time.sleep(3)
+        # # Click on the filter button to open filter options
+        # job_filter = WebDriverWait(driver, 10).until(
+        #     EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/div/div/div[2]/div[1]/button[2]/span"))
+        # )
+        # job_filter.click()
+        # print("Opened filter popup")
+        # time.sleep(3)
 
-        # Select the 'Last Month' option from the dropdown
-        period_dropdown = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/kendo-popup/div/form/div[2]/div[1]/div/ag-dropdownlist/kendo-dropdownlist/span/span[1]"))
-        )
-        period_dropdown.click()
-        print("Clicked on period dropdown")
+        # # Select the 'Last Month' option from the dropdown
+        # period_dropdown = WebDriverWait(driver, 10).until(
+        #     EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/kendo-popup/div/form/div[2]/div[1]/div/ag-dropdownlist/kendo-dropdownlist/span/span[1]"))
+        # )
+        # period_dropdown.click()
+        # print("Clicked on period dropdown")
 
-        # Click the 'Filter' button
-        filter_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.ID, "jobsFilterButton"))
-        )
-        filter_button.click()
-        print("Clicked on the filter button")
-        time.sleep(5)
+        # # Click the 'Filter' button
+        # filter_button = WebDriverWait(driver, 10).until(
+        #     EC.element_to_be_clickable((By.ID, "jobsFilterButton"))
+        # )
+        # filter_button.click()
+        # print("Clicked on the filter button")
+        # time.sleep(5)
 
         # Open export popup and click export
         openExportPopup = WebDriverWait(driver, 10).until(
@@ -101,7 +101,7 @@ def download_export():
         print("Clicked on the Export button")
 
         # Wait for the file to download
-        time.sleep(20)
+        time.sleep(10)
 
         # Get the latest downloaded file
         downloaded_files = os.listdir(DOWNLOAD_DIR)
