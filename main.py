@@ -89,32 +89,32 @@ def download_export():
         # time.sleep(5)
 
         # Open export popup and click export
-        # openExportPopup = WebDriverWait(driver, 10).until(
-        #     EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/div/div/div[2]/div[2]/div[2]/ag-grid-options/div/ag-menu/button/span"))
-        # )
-        # openExportPopup.click()
-        # print("Clicked on the openExportPopup button")
+        openExportPopup = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/div/ag-jobs/div/div/div[2]/div[2]/div[2]/ag-grid-options/div/ag-menu/button/span"))
+        )
+        openExportPopup.click()
+        print("Clicked on the openExportPopup button")
 
-        # ExportbTN = WebDriverWait(driver, 10).until(
-        #     EC.element_to_be_clickable((By.XPATH, "/html/body/kendo-popup/div/kendo-menu/ul/li[2]/span/span"))
-        # )
-        # ExportbTN.click()
-        # print("Clicked on the Export button")
+        ExportbTN = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "/html/body/kendo-popup/div/kendo-menu/ul/li[2]/span/span"))
+        )
+        ExportbTN.click()
+        print("Clicked on the Export button")
 
-        # # Wait for the file to download
-        # time.sleep(10)
+        # Wait for the file to download
+        time.sleep(10)
 
-        # # Get the latest downloaded file
-        # downloaded_files = os.listdir(DOWNLOAD_DIR)
-        # if not downloaded_files:
-        #     raise HTTPException(status_code=404, detail="No files downloaded.")
+        # Get the latest downloaded file
+        downloaded_files = os.listdir(DOWNLOAD_DIR)
+        if not downloaded_files:
+            raise HTTPException(status_code=404, detail="No files downloaded.")
 
-        # latest_file = max([os.path.join(DOWNLOAD_DIR, f) for f in downloaded_files], key=os.path.getctime)
-        # print(f"Downloaded file: {latest_file}")
+        latest_file = max([os.path.join(DOWNLOAD_DIR, f) for f in downloaded_files], key=os.path.getctime)
+        print(f"Downloaded file: {latest_file}")
 
-        # # Return the file as a response
-        # return FileResponse(latest_file, media_type="application/octet-stream", filename=os.path.basename(latest_file))
-        return  print("valuetest...")
+        # Return the file as a response
+        return FileResponse(latest_file, media_type="application/octet-stream", filename=os.path.basename(latest_file))
+        # return  print("valuetest...")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
