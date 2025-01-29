@@ -114,8 +114,7 @@ def download_export():
 
         # # Return the file as a response
         # return FileResponse(latest_file, media_type="application/octet-stream", filename=os.path.basename(latest_file))
-         valuetest = "test value"
-        return valuetest
+        return  print("valuetest...")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
