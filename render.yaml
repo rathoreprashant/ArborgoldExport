@@ -1,20 +1,27 @@
 services:
   - type: web
-    name: selenium-fastapi-app
+    name: arborgoldfileexport
     env: python
     buildCommand: |
-      apt-get update && apt-get install -y wget curl unzip
-      wget -qO- https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-keyring.gpg
-      echo 'deb [signed-by=/usr/share/keyrings/google-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google-chrome.list
-      apt-get update && apt-get install -y google-chrome-stable
-      wget -N https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver-linux64.zip -P /tmp/
-      unzip /tmp/chromedriver-linux64.zip -d /usr/local/bin/
-      chmod +x /usr/local/bin/chromedriver
-      pip install -r requirements.txt
-    startCommand: "uvicorn main:app --host 0.0.0.0 --port 8000"
+      apt-get update && apt-get install -y \
+        wget \
+        curl \
+        unzip \
+        gnupg2 \
+        ca-certificates \
+        fonts-liberation \
+        libappindicator3-1 \
+        libasound2 \
+        libxss1 \
+        libnss3 \
+        libgdk-pixbuf2.0-0 \
+        xdg-utils \
+        google-chrome-stable
+    startCommand: |
+      python main.py
+    plan: free
     envVars:
       - key: GOOGLE_CHROME_BIN
-        value: "/usr/bin/google-chrome"
-      - key: CHROMEDRIVER_PATH
-        value: "/usr/local/bin/chromedriver"
-    region: oregon
+        value: "/usr/bin/google-chrome-stable"
+      - key: DISPLAY
+        value: ":0"
