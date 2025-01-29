@@ -2,7 +2,15 @@ services:
   - type: web
     name: selenium-fastapi-app
     env: python
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: |
+      apt-get update && apt-get install -y wget curl unzip
+      wget -qO- https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-keyring.gpg
+      echo 'deb [signed-by=/usr/share/keyrings/google-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google-chrome.list
+      apt-get update && apt-get install -y google-chrome-stable
+      wget -N https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver-linux64.zip -P /tmp/
+      unzip /tmp/chromedriver-linux64.zip -d /usr/local/bin/
+      chmod +x /usr/local/bin/chromedriver
+      pip install -r requirements.txt
     startCommand: "uvicorn main:app --host 0.0.0.0 --port 8000"
     envVars:
       - key: GOOGLE_CHROME_BIN
