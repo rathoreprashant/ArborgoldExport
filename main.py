@@ -16,7 +16,7 @@ if not os.path.exists(DOWNLOAD_DIR):
 
 
 @app.get("/download-export")
-def download_export():
+async def download_export():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
