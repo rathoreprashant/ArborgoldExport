@@ -30,7 +30,8 @@ def download_export():
         "safebrowsing.enabled": True
     })
 
-    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
+    # driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
+    driver = webdriver.Chrome(service=webdriver.ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
     try:
         driver.get("https://utrees.arborgold.net/AG/#/login")
